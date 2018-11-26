@@ -1,0 +1,193 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+
+<h2 class="title" *ngIf="!isNewUpdate">Update Member</h2>
+
+<form (ngSubmit)="submitForm()" #form="ngForm" autocomplete="nope">
+    
+    
+    <div class="card" style="margin:15px 0px;">
+        <div class="card-body"> 
+            <h5 class="card-title">Personal Details</h5>
+            <div class="row">
+                <div class="form-group col-md-6">
+                        <label for="input-email" class="sr-only">First Name</label>
+                        <input name="firstName" [(ngModel)]="eventModel.userDetails.firstName" id="input-email"  class="form-control" placeholder="First Name"
+                            #firstName="ngModel" [class.form-control-danger]="firstName.invalid && firstName.touched" autofocus required maxlength="25">
+                        <small class="form-text error" *ngIf="firstName.invalid && firstName.touched && firstName.errors?.required">
+                            FirstName is required!
+                        </small>
+                </div>
+                
+                <div class="form-group col-md-6">
+                    <label for="input-lastName" class="sr-only">Last Name</label>
+                    <input name="lastName" [(ngModel)]="eventModel.userDetails.lastName" id="input-lastName"  class="form-control" placeholder="Last Name"
+                        #lastName="ngModel" [class.form-control-danger]="lastName.invalid && lastName.touched" autofocus required maxlength="25">
+                    <small class="form-text error" *ngIf="lastName.invalid && lastName.touched && lastName.errors?.required">
+                        Last Name is required!
+                    </small>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="input-email" class="sr-only">Email</label>
+                    <input name="email" [(ngModel)]="eventModel.userDetails.email" id="input-email"  class="form-control" placeholder="Email"
+                        #email="ngModel" [class.form-control-danger]="email.invalid && email.touched" autofocus required maxlength="25">
+                    <small class="form-text error" *ngIf="email.invalid && email.touched && email.errors?.required">
+                        Email is required!
+                    </small>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="input-email" class="sr-only">Phone No</label>
+                    <input type="number" name="phone" [(ngModel)]="eventModel.userDetails.phone" id="input-email"  class="form-control" placeholder="Phone No"
+                        #phone="ngModel" [class.form-control-danger]="phone.invalid && phone.touched" autofocus required maxlength="10">
+                    <small class="form-text error" *ngIf="phone.invalid && phone.touched && phone.errors?.required">
+                        Phone is required!
+                    </small>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="input-email" class="sr-only">Enterprise</label>
+                    <input name="enterprise" [(ngModel)]="eventModel.userDetails.enterprise" id="input-enterprise"  class="form-control" placeholder="Enterprise"
+                        #enterprise="ngModel" [class.form-control-danger]="enterprise.invalid && enterprise.touched" autofocus required >
+                    <small class="form-text error" *ngIf="enterprise.invalid && enterprise.touched && enterprise.errors?.required">
+                        Enterprise is required!
+                    </small>
+                </div>
+
+             
+                
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="input-parentEmail" class="sr-only">Parent Email</label>
+                    <input name="parentEmail" [(ngModel)]="eventModel.userDetails.parentEmail" id="input-parentEmail"  class="form-control" placeholder="Parent Email"
+                        #parentEmail="ngModel" [class.form-control-danger]="parentEmail.invalid && parentEmail.touched" autofocus required maxlength="75">
+                    <small class="form-text error"  *ngIf="parentEmail.invalid && parentEmail.touched && parentEmail.errors?.required" >
+                        parent Email is required!
+                    </small>
+                </div>
+            </div>
+        
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn btn-success" (click)="previewURLModal()" style="margin:15px 0px;" > Profile Images</div>
+                    <div class="row">
+                        <div class="col-md-1" style="margin-right:10px;"> 
+                                <img src={{eventModel.profileImageURL}}  width="100px;"/>
+                        </div>
+                    </div>
+                    
+                    <p class="form-text error" *ngIf="thumbnailErrMsg" style="margin:-10px 15px;">
+                            Profile image is required!
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="card" style="margin:15px 0px;">
+        <div class="card-body"> 
+            <h5 class="card-title">Enterprise Details</h5>
+            <fieldset ngModelGroup="enterpriseDetails">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                            <label for="input-email" class="sr-only">Name</label>
+                            <input name="name" [ngModel]="eventModel.enterpriseDetails[0].fields?.name" (ngModelChange)="eventModel.enterpriseDetails[0].fields.name = $event" id="input-name"  class="form-control" placeholder="Name"
+                                #name="ngModel" [class.form-control-danger]="name.invalid && name.touched" autofocus required maxlength="25">
+                            <small class="form-text error" *ngIf="name.invalid && name.touched && name.errors?.required">
+                                Name is required!
+                            </small>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="input-joinID" class="sr-only">Join ID</label>
+                        <input name="joinID" [ngModel]="eventModel.enterpriseDetails[0].fields?.joinID" (ngModelChange)="eventModel.enterpriseDetails[0].fields.joinID = $event" id="input-joinID"  class="form-control" placeholder="joinID"
+                            #joinID="ngModel" [class.form-control-danger]="joinID.invalid && joinID.touched" autofocus required maxlength="25">
+                        <small class="form-text error" *ngIf="joinID.invalid && joinID.touched && joinID.errors?.required">
+                            joinID is required!
+                        </small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                            <label for="input-email" class="sr-only">City</label>
+                            <input name="city" [ngModel]="eventModel.enterpriseDetails[0].fields?.city" (ngModelChange)="eventModel.enterpriseDetails[0].fields.city = $event" id="input-name"  class="form-control" placeholder="City"
+                                #city="ngModel" [class.form-control-danger]="city.invalid && city.touched" autofocus required maxlength="25">
+                            <small class="form-text error" *ngIf="city.invalid && city.touched && city.errors?.required">
+                                City is required!
+                            </small>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="input-address" class="sr-only">Address</label>
+                        <input name="address" [ngModel]="eventModel.enterpriseDetails[0].fields?.address" (ngModelChange)="eventModel.enterpriseDetails[0].fields.address = $event" id="input-name"  class="form-control" placeholder="address"
+                            #address="ngModel" [class.form-control-danger]="address.invalid && address.touched" autofocus required maxlength="100">
+                        <small class="form-text error" *ngIf="address.invalid && address.touched && address.errors?.required">
+                            Church ID is required!
+                        </small>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                            <label for="input-email" class="sr-only">Short Description</label>
+                            <textarea name="descShort" [ngModel]="eventModel.enterpriseDetails[0].fields?.descShort" (ngModelChange)="eventModel.enterpriseDetails[0].fields.descShort = $event" id="input-name"  class="form-control" placeholder="Desc Short"
+                                #descShort="ngModel" [class.form-control-danger]="descShort.invalid && descShort.touched" autofocus required rows="5" > </textarea>
+                            <small class="form-text error" *ngIf="descShort.invalid && descShort.touched && descShort.errors?.required">
+                                Short Description is required!
+                            </small>
+                    </div>
+                </div>
+            </fieldset>
+           
+
+                        <div class="row">
+                <div class="col-md-12">
+                    <div class="btn btn-success" (click)="previewURLModal()" style="margin:15px 0px;" >PREVIEW IMAGES</div>(<b>Choose upto 5 images</b>)
+                    <div class="row">
+                        <div class="col-md-1" *ngFor="let pImage of previewImages;let pIndex = index" style="margin-right:10px;"> 
+                                <img src={{pImage}}  width="100px;"/>
+                                <i class="fa fa-times-circle" style="float:left;color:red;cursor:pointer;    padding-top: 7px;" (click) ="deleteImage(pIndex)"></i>
+                        </div>
+                    </div>
+                    
+                    <p class="form-text error" *ngIf="previewUrlErrMsg" style="margin:-10px 15px;">
+                            Profile image is required!
+                    </p>
+                   
+                    <div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn btn-success" (click)="thumbnailURLModal()" style="margin:15px 0px;" > THUMBNAIL IMAGE</div>
+                    <div class="row">
+                        <div class="col-md-1" style="margin-right:10px;"> 
+                                <img src={{eventModel.enterpriseDetails[0].fields?.thumbnail}}  width="100px;"/>
+                        </div>
+                    </div>
+                    
+                    <p class="form-text error" *ngIf="thumbnailErrMsg" style="margin:-10px 15px;">
+                            Thumbnail image is required!
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <button [disabled]="!form.valid" class="btn btn-block btn-hero-success" >
+        Save Profile
+    </button>
+</form>

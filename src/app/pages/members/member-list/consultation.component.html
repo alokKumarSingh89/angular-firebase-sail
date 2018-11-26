@@ -1,0 +1,158 @@
+
+<!-- <toaster-container [toasterconfig]="toastConfig"></toaster-container> -->
+<div class="modal-header">
+    <span  *ngIf="!isDisplayConsulation">Linked Pofile</span>
+    <span  *ngIf="isDisplayConsulation">Consultation</span>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" >
+    <div *ngIf="!isDisplayConsulation">
+
+
+          <table *ngIf="linkedProfile.linkedProfiles" class="table dataTable table-striped table-bordered">
+              <thead>
+                <tr>
+                    <td>Profile Image</td>
+                    <td>firstName</td>
+                    <td>lastName</td>
+                    <td>User Id</td>
+                    <td>Action</td>
+                </tr>
+              </thead>
+            
+              <tbody>
+                <tr *ngFor="let user of linkedProfile.linkedProfiles">
+               
+                    <td> <img width="50px" height="50px" [src]="user.profileImageURL" /> </td>
+                    <td> {{ user.firstName }}</td>
+                    <td> {{ user.lastName }} </td>
+                    <td> {{ user.userID }}</td>
+                    <td> <i class='fa fa-pencil edit-btn' (click)="editUser(user)"></i> <i class='fa fa-trash delete-btn' (click)="deleteUser(user)"></i><i class="fa fa-user-plus" aria-hidden="true"  title="consultation" (click)="openConsulation(user)" ></i> </td>
+                </tr>
+              </tbody>
+          </table>
+          <div *ngIf="linkedProfile.linkedProfiles === undefined">
+                No found any linked profile.
+          </div>
+    </div>
+
+    <div *ngIf="isDisplayConsulation">
+
+        <!-- consultation -->
+
+
+        <form (ngSubmit)="submitForm()" #form="ngForm" autocomplete="nope">
+
+            <div class="row">
+                <div class="form-group col-md-12">
+                        <label for="input-email" class="sr-only">Type</label>
+                            <select name="type" #type [(ngModel)]="linkProfileModel.type" id="input-email"  class="form-control">
+                              <option *ngFor="let type of consulationType" value="{{ type.key }}"> 
+                                  {{ type.value }}
+                              </option>
+                            </select>
+                        <small class="form-text error" *ngIf="type.invalid && type.touched && type.errors?.required">
+                            Type is required!
+                        </small>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="input-email" class="sr-only">Notes</label>
+                      <textarea name="notes" [(ngModel)]="linkProfileModel.notes" id="input-email"  class="form-control" placeholder="Notes"
+                      #notes="ngModel" [class.form-control-danger]="notes.invalid && notes.touched" autofocus required> </textarea>
+                    <small class="form-text error" *ngIf="notes.invalid && notes.touched && notes.errors?.required">
+                        Notes is required!
+                    </small>
+            </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                  <button [disabled]="!form.valid" class="btn  btn-hero-success">
+                      Save
+                  </button>
+                  <input type="button" value="Clear" class="btn btn-primary" (click)="clearForm()">
+              </div>
+            </div>
+        </form>
+        <br>
+        <br>
+        <div class="col-md-12">
+                <ng-table [config]="config"
+                (tableChanged)="onChangeTable(config)"
+                (cellClicked)="onCellClick($event)"
+                (cellEdited)="onCellEdit($event)"
+                (cellDeleted)="onCellDelete($event)"
+                (cellSendNotificationed)="onCellNotification($event)"
+                (cellLinked)="onCellLink($event)"
+                [rows]="rows" [columns]="columns">
+        </ng-table>
+        <pagination *ngIf="config.paging"
+                  class="pagination-sm"
+                  [(ngModel)]="page"
+                  [totalItems]="length"
+                  [itemsPerPage]="itemsPerPage"
+                  [maxSize]="maxSize"
+                  [boundaryLinks]="true"
+                  [rotate]="false"
+                  (pageChanged)="onChangeTable(config, $event)"
+                  (numPages)="numPages = $event">
+        </pagination>
+        <pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>
+        </div>
+    </div>
+
+
+    
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-primary" (click)="submit()">Save</button> -->
+  </div>
+  <style>
+  .selected-img{
+    background: aquamarine;
+    padding: 3px
+  }
+  .img-background{
+    curson:pointer;
+    padding:5px;
+    width: 105px;
+  }
+  .modal{
+    display: block !important; /* I added this to see the modal, you don't need this */
+}
+
+/* Important part */
+.modal-dialog{
+    overflow-y: initial !important
+}
+/* .modal-body{
+    height: 250px;
+    overflow-y: auto;
+} */
+
+.modal-xxl .modal-lg {
+    max-width: 90%;
+}
+
+  .modal{
+      display: block !important; /* I added this to see the modal, you don't need this */
+      overflow:auto !important;
+  }
+    
+  /* Important part */
+  .modal-dialog{
+      overflow-y: initial !important
+  }
+  .modal-body{
+     overflow-y: auto;
+  }
+  .modal{
+    overflow: auto !important;
+  }
+  .cdk-overlay-container {
+    position: fixed;
+    z-index: 15000;
+  }
+  </style>

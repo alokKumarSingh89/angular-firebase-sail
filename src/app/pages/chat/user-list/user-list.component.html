@@ -1,0 +1,21 @@
+
+  <div class="search" style="display: flex;justify-content: center;">
+    <button type="button" routerLink="add" class="btn btn-primary">Create Conversation</button>
+  </div>
+  <!-- <p class="divider">Peoples</p>
+  <ul class="list">
+    <app-user-item *ngFor="let user of users; let i =index " (emailId)="setSelectedEmailId($event)"
+                   [user]=user (click)="setClickedRow(i)" [class.selectedcon]="i == selectedConversationIndex">
+    </app-user-item>
+  </ul> -->
+  <p class="divider">Conversations</p>
+  <p *ngIf="groupConversation && groupConversation.length<1">There is no conversation, Create new chat room to start</p>
+  <ul class="list">
+    <app-group-chat-item 
+      [conversation]=conversation 
+      *ngFor="let conversation of groupConversation; let i =index " 
+      (getConversation)="setSelectedConversation($event)"
+      (click)="setClickedRow(i)" 
+      [class.selectedcon]="i == selectedConversationIndex">
+    </app-group-chat-item>
+  </ul>

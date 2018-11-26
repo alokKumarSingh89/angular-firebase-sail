@@ -1,0 +1,13 @@
+<li class="clearfix" (click)="setSelectedEmailId()">
+  <div class="row" style="cursor: pointer;">
+    <div class="col-md-3 col-xs-3 col-sm-3" style="padding:0">
+      <img src="{{user.iconURL?user.iconURL:'https://s3-ap-southeast-2.amazonaws.com/nuhabit-dementiaapp001-gmail.com/5b7ceca03f2235f614d83e98_default.png'}}"
+        alt="avatar" width="100%" style="border-radius:50%" />
+    </div>
+    <div class="col-md-9 col-xs-9 col-sm-9">
+      <div class="about">
+        {{user.createdBy}}
+      </div>
+    </div>
+  </div>
+</li>

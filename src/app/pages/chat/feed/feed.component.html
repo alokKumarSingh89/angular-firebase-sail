@@ -1,0 +1,7 @@
+<div #scroller class="chat-history">
+    <ul>
+      <li class="clearfix" *ngFor="let message of feed | async">
+        <app-message [chatMessage]=message></app-message>
+      </li>
+    </ul>
+</div>

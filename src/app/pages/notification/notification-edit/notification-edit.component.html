@@ -1,0 +1,184 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+<h2 class="title" *ngIf="isNewUpdate">Create New Notification</h2>
+<h2 class="title" *ngIf="!isNewUpdate">Update Notification</h2>
+<form (ngSubmit)="submitForm()" #form="ngForm" autocomplete="nope">
+   
+    <div class="row">
+        <div class="form-group col-md-6">
+                <label for="input-email" class="sr-only">Name</label>
+                <input name="name" [(ngModel)]="notificationModel.name" id="input-email"  class="form-control" placeholder="Name"
+                    #name="ngModel" [class.form-control-danger]="name.invalid && name.touched" autofocus required>
+                <small class="form-text error" *ngIf="name.invalid && name.touched && name.errors?.required">
+                    Name is required!
+                </small>
+            </div>
+        
+            <div class="form-group col-md-6">
+                <label for="input-shortDesc" class="sr-only">Short Description</label>
+                <input name="shortDesc" [(ngModel)]="notificationModel.shortDesc" type="text" id="input-shortDesc" class="form-control" placeholder="Short Description"
+                    #shortDesc="ngModel" [class.form-control-danger]="shortDesc.invalid && shortDesc.touched" required>
+                <small class="form-text error" *ngIf="shortDesc.invalid && shortDesc.touched && shortDesc.errors?.required">
+                    Short Description is required!
+                </small>
+            </div>
+    </div>
+    
+    <div class="form-group">
+        <label>Long Description HTML</label>
+        <ckeditor [config]="{ extraPlugins: 'divarea', height: '320' } "  [(ngModel)]="notificationModel.longDescHTML" name="longDescHTML" id="input-longDescHTML"  #longDescHTML="ngModel"  [class.form-control-danger]="longDescHTML.invalid && longDescHTML.touched"></ckeditor>
+        <small class="form-text error" *ngIf="longDescHTML.invalid && longDescHTML.touched && longDescHTML.errors?.required">
+                Long Description is required!
+        </small>
+
+    </div>
+
+    <div class="form-group">
+        <label for="input-shortDesc" class="sr-only">Web URL </label>
+        <input name="webURL" [(ngModel)]="notificationModel.webURL" type="text" id="input-webURL" class="form-control" placeholder="Web URL"
+            #webURL ="ngModel" [class.form-control-danger]="webURL.invalid && webURL.touched"
+            pattern="^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$" >
+        <small class="form-text error" *ngIf="webURL.invalid && webURL.touched && webURL.errors?.required">
+            Long Description URL is required!
+        </small>
+        <small class="form-text error"
+                 *ngIf="webURL.invalid && webURL.touched && webURL.errors?.pattern">
+            Enter valid URL
+          </small>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn btn-success" (click)="previewUrlModal()" style="margin:15px 0px;">Select Preview Image</div>
+            <img src={{notificationModel.previewURL}}  width="100px;"/>
+            <p class="form-text error" *ngIf="previewUrlErrMsg" style="margin:-10px 15px;">
+                    Preview image is required!
+            </p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn btn-success" (click)="thumbnailURLModal()" style="margin:15px 0px;">Select Thumbnail Image</div>
+            <img src={{notificationModel.thumbnailURL}}  width="100px;"/>
+            <span class="form-text error" *ngIf="thumbnailErrMsg" style="margin:-10px 15px; ;">
+                    Thumnail image is required!
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+                <label for="input-pushTitle" class="sr-only">Push Title</label>
+                <input name="pushTitle" [(ngModel)]="notificationModel.pushTitle" id="input-email"  class="form-control" placeholder="pushTitle"
+                    #pushTitle="ngModel" [class.form-control-danger]="pushTitle.invalid && pushTitle.touched" autofocus >
+                <small class="form-text error" *ngIf="pushTitle.invalid && pushTitle.touched && pushTitle.errors?.required">
+                    Push Title is required!
+                </small>
+            </div>
+        
+            <div class="form-group col-md-6">
+                <label for="input-pushShortDesc" class="sr-only">Push Short Description</label>
+                <input name="pushShortDesc" [(ngModel)]="notificationModel.pushShortDesc" type="text" id="input-pushShortDesc" class="form-control" placeholder="Push Short Desc"
+                    #pushShortDesc="ngModel" [class.form-control-danger]="pushShortDesc.invalid && pushShortDesc.touched" required>
+                <small class="form-text error" *ngIf="pushShortDesc.invalid && pushShortDesc.touched && pushShortDesc.errors?.required">
+                    Push Short Description is required!
+                </small>
+            </div>
+    </div>
+    
+    <div class="form-group">
+        <label>Push Long Description HTML</label>
+        <ckeditor [config]="{ extraPlugins: 'divarea', height: '320' } "  [(ngModel)]="notificationModel.pushLongDesc" name="pushLongDesc" id="input-pushLongDesc"  #pushLongDesc="ngModel"  [class.form-control-danger]="pushLongDesc.invalid && pushLongDesc.touched"></ckeditor>
+        <small class="form-text error" *ngIf="pushLongDesc.invalid && pushLongDesc.touched && pushLongDesc.errors?.required">
+                Push Long Description is required!
+        </small>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn btn-success" (click)="pushPreviewUrlModal()" style="margin:15px 0px;">Select Push Preview Image</div>
+            <img src={{notificationModel.pushPreviewURL}}  width="100px;"/>
+            <p class="form-text error" *ngIf="pushPreviewUrlErrMsg" style="margin:-10px 15px;">
+                    Preview Push image is required!
+            </p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn btn-success" (click)="pushThumbnailURLModal()" style="margin:15px 0px;">Select Push Thumbnail Image</div>
+            <img src={{notificationModel.pushThumbnailURL}}  width="100px;"/>
+            <span class="form-text error" *ngIf="pushThumbnailErrMsg" style="margin:-10px 15px; ;">
+                    Thumnail push image is required!
+            </span>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col-md-6" >
+                <label>PushTargetGroups</label>
+            <select class="form-control"   name="pushTargetGroups" [(ngModel)]="notificationModel.pushTargetGroups" type="text" id="input-PushTargetGroups" class="form-control" >
+                    <option>Public</option>
+                    <option>Private</option>
+                </select>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="form-group col-md-6">
+                <label for="input-email" class="sr-only">Email Subject</label>
+                <input name="emailSubject" [(ngModel)]="notificationModel.emailSubject" id="input-email"  class="form-control" placeholder="Email Subject"
+                    #emailSubject="ngModel" [class.form-control-danger]="emailSubject.invalid && emailSubject.touched" autofocus >
+                <small class="form-text error" *ngIf="emailSubject.invalid && emailSubject.touched && emailSubject.errors?.required">
+                    Name is required!
+                </small>
+        </div>
+    </div>
+        
+    <div class="form-group">
+        <label>Email Body</label>
+        <ckeditor [config]="{ extraPlugins: 'divarea', height: '320' } "  [(ngModel)]="notificationModel.emailBody" name="emailBody" id="input-emailBody"  #emailBody ="ngModel"  [class.form-control-danger]="emailBody.invalid && emailBody.touched"></ckeditor>
+        <small class="form-text error" *ngIf="emailBody.invalid && emailBody.touched && emailBody.errors?.required">
+                Long Description is required!
+        </small>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6" >
+                <label>Email Target Groups</label>
+            <select class="form-control"   name="emailTargetGroups" [(ngModel)]="notificationModel.emailTargetGroups" type="text" id="input-emailTargetGroups" class="form-control" >
+                    <option>Public</option>
+                    <option>Private</option>
+                </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+                <label for="input-email" class="sr-only">Sms Text</label>
+                <input name="smsText" [(ngModel)]="notificationModel.smsText" id="input-smsText"  class="form-control" placeholder="Sms Text"
+                    #smsText="ngModel" [class.form-control-danger]="smsText.invalid && smsText.touched" autofocus >
+                <small class="form-text error" *ngIf="smsText.invalid && smsText.touched && smsText.errors?.required">
+                        sms text required!
+                </small>
+        </div>
+    </div>
+
+    <div class="row">
+            <div class="form-group col-md-6" >
+                    <label>SMS Target Groups</label>
+                <select class="form-control"   name="smsTargetGroups" [(ngModel)]="notificationModel.smsTargetGroups" type="text" id="input-smsTargetGroups" class="form-control" >
+                        <option>Public</option>
+                        <option>Private</option>
+                    </select>
+            </div>
+        </div>
+
+
+
+    <button [disabled]="!form.valid" class="btn btn-block btn-hero-success" >
+        Save Notification
+    </button>
+</form>

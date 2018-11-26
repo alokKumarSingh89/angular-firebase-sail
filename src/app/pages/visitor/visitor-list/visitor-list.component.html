@@ -1,0 +1,74 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+
+<br>    <br>
+<br><br>
+
+
+<div class="row">
+  
+  <div class="col-md-4">
+    <div class="form-group">
+
+      <label for="input-pushTriggerTime" class="sr-only">Start Date</label>
+      <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Start Date" class="form-control"  name="pushTriggerTime" [(ngModel)]="startDate"  id="input-pushTriggerTime">
+      <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+    </div>
+  </div>
+  <div class="col-md-4">
+      <div class="form-group">
+        <label for="input-pushTriggerTime" class="sr-only">End Date</label>
+        <input [owlDateTime]="dt2"  [owlDateTimeTrigger]="dt2" placeholder="End Date" class="form-control"  name="pushTriggerTime" [(ngModel)]="endDate"  id="input-pushTriggerTime">
+        <owl-date-time #dt2 [pickerType]="'calendar'"></owl-date-time>
+      </div>
+  </div>
+</div> 
+<div class="row" >
+    <div class="col-md-4">
+        <label>Name</label>
+          <input placeholder="First Name" class="form-control"  name="pushTriggerTime" [(ngModel)]="firstName"  id="input-pushTriggerTime">
+    </div>
+    <div class="col-md-4">
+      <label>Organization Type</label>
+        <input placeholder="Organization" class="form-control"  name="pushTriggerTime" [(ngModel)]="selectedOrgType"  id="input-pushTriggerTime">
+    </div>
+</div>
+<div class="row" style="margin: 15px 0px">
+    <div >
+        <button  class="btn btn-hero-info btn-demo" (click) = "fetchVisitors()" [disabled]= "!((endDate!= null && startDate != null) || selectedOrgType != null)"> Search </button>
+    </div>
+</div>
+
+<div >
+    <div> <a routerLink="add" class="btn btn-hero-info btn-demo"> Add Visitor</a> </div>
+    <br><br>
+</div>
+<div class="row">
+        <!-- <div class="col-md-4" *ngIf="canCreate"> <a routerLink="add" class="btn btn-hero-info btn-demo"> Add Facility</a> </div> -->
+        <div class="col-md-8">
+          <input *ngIf="config.filtering" placeholder="Filter all columns"
+                 [ngTableFiltering]="config.filtering"
+                 class="form-control"
+                 (tableChanged)="onChangeTable(config)"/>
+        </div>
+      </div>
+      <br>
+      <ng-table [config]="config"
+                (tableChanged)="onChangeTable(config)"
+                (cellClicked)="onCellClick($event)"
+                (cellEdited)="onCellEdit($event)"
+                (cellDeleted)="onCellDelete($event)"
+                (cellSendNotificationed)="onCellNotification($event)"
+                [rows]="rows" [columns]="columns">
+      </ng-table>
+      <pagination *ngIf="config.paging"
+                  class="pagination-sm"
+                  [(ngModel)]="page"
+                  [totalItems]="length"
+                  [itemsPerPage]="itemsPerPage"
+                  [maxSize]="maxSize"
+                  [boundaryLinks]="true"
+                  [rotate]="false"
+                  (pageChanged)="onChangeTable(config, $event)"
+                  (numPages)="numPages = $event">
+      </pagination>
+      <pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>

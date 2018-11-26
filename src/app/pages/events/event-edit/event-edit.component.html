@@ -1,0 +1,340 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+<h2 class="title" *ngIf="isNewUpdate">Create New Event</h2>
+<h2 class="title" *ngIf="!isNewUpdate">Update Event</h2>
+
+<form  #form="ngForm" autocomplete="nope">
+    
+    <div class="row" *ngIf="!isNewUpdate">
+        <div class="form-group col-md-6">
+            <label for="input-email" class="sr-only">Event Id</label>
+            <input name="eventID" [(ngModel)]="eventModel.eventID" id="input-eventID" readonly class="form-control" placeholder="Event Id"
+                #eventID="ngModel" [class.form-control-danger]="eventID.invalid && eventID.touched" autofocus >
+            <small class="form-text error" *ngIf="eventID.invalid && eventID.touched && eventID.errors?.required">
+                Event ID is required!
+            </small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+                <label for="input-email" class="sr-only">Name</label>
+                <input name="name" [(ngModel)]="eventModel.name" id="input-email"  class="form-control" placeholder="Event Name"
+                    #name="ngModel" [class.form-control-danger]="name.invalid && name.touched" autofocus required maxlength="25">
+                <small class="form-text error" *ngIf="name.invalid && name.touched && name.errors?.required">
+                    Name is required!
+                </small>
+        </div>
+        
+            <div class="form-group col-md-6">
+                <label for="input-shortDesc" class="sr-only">Short Description</label>
+                <input name="shortDesc" [(ngModel)]="eventModel.shortDesc" type="text" id="input-shortDesc" class="form-control" placeholder="Short Description"
+                    #shortDesc="ngModel" [class.form-control-danger]="shortDesc.invalid && shortDesc.touched" required maxlength="60">
+                <small class="form-text error" *ngIf="shortDesc.invalid && shortDesc.touched && shortDesc.errors?.required">
+                    Short Description is required!
+                </small>
+            </div>
+
+    </div>
+
+    <div class="form-group">
+        <label>Long Description HTML</label>
+        <ckeditor [config]="{ extraPlugins: 'divarea', height: '320' } "  [(ngModel)]="eventModel.longDescHTML" name="longDescHTML" id="input-longDescHTML"  #longDescHTML="ngModel"  [class.form-control-danger]="longDescHTML.invalid && longDescHTML.touched"></ckeditor>
+        <small class="form-text error" *ngIf="longDescHTML.invalid && longDescHTML.touched && longDescHTML.errors?.required">
+                Long Description is required!
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="input-shortDesc" class="sr-only">Chief Guests</label>
+        <input name="chiefGuests" [(ngModel)]="eventModel.chiefGuests" type="text" id="input-shortDesc" class="form-control" placeholder="Chief Guests comma separated"
+            #chiefGuests="ngModel" [class.form-control-danger]="chiefGuests.invalid && chiefGuests.touched"  maxlength="120">
+        <small class="form-text error" *ngIf="chiefGuests.invalid && chiefGuests.touched && chiefGuests.errors?.required">
+            Chief Guests is required!
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="input-shortDesc" class="sr-only">Hosted By</label>
+        <input name="hostedBy" [(ngModel)]="eventModel.hostedBy" type="text" id="input-shortDesc" class="form-control" placeholder="Hosted By"
+            #hostedBy="ngModel" [class.form-control-danger]="hostedBy.invalid && hostedBy.touched"  maxlength="120">
+        <small class="form-text error" *ngIf="hostedBy.invalid && hostedBy.touched && hostedBy.errors?.required">
+            Hosted By is required!
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="input-shortDesc" class="sr-only">longDescURL</label>
+        <input name="longDescURL" [(ngModel)]="eventModel.longDescURL" type="text" id="input-longDescURL" class="form-control" placeholder="long Description URL"
+            #longDescURL="ngModel" [class.form-control-danger]="longDescURL.invalid && longDescURL.touched" 
+            pattern="^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$" >
+        <small class="form-text error" *ngIf="longDescURL.invalid && longDescURL.touched && longDescURL.errors?.required">
+            Long Description URL is required!
+        </small>
+        <small class="form-text error"
+                 *ngIf="longDescURL.invalid && longDescURL.touched && longDescURL.errors?.pattern">
+            Enter valid URL
+          </small>
+    </div>
+
+    <!-- <div class="form-group">
+        <label for="input-shortDesc" class="sr-only">Event Start Time</label>
+        <input name="eventStartTime" [(ngModel)]="eventModel.eventStartTime" type="text" id="input-eventStartTime" class="form-control" placeholder="eventStartTime" required
+            #eventStartTime="ngModel" [class.form-control-danger]="eventStartTime.invalid && eventStartTime.touched" >
+        <small class="form-text error" *ngIf="eventStartTime.invalid && eventStartTime.touched && eventStartTime.errors?.required">
+            Event Start Time is required!
+        </small>
+    </div> -->
+
+    <div class="form-group">
+        <label for="input-organizers" class="sr-only">organizers(Email)</label>
+        <input name="organizers" [(ngModel)]="eventModel.organizers" type="text" id="input-organizers" class="form-control" placeholder="Organizers(Email with comma seperated)"
+            #organizers="ngModel" [class.form-control-danger]="organizers.invalid && organizers.touched">
+        <small class="form-text error" *ngIf="organizers.invalid && organizers.touched && organizers.errors?.required">
+            Organizers is required!
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="input-location" class="sr-only">Location</label>
+        <input name="location" [(ngModel)]="location.organizers" type="text" id="input-location" class="form-control" placeholder="Location" 
+            #location="ngModel" [class.form-control-danger]="location.invalid && location.touched">
+        <small class="form-text error" *ngIf="location.invalid && location.touched && location.errors?.required">
+            Location is required!
+        </small>
+    </div>
+
+    
+    <div class="form-group">
+        <label for="input-eventStartTime" class="sr-only">Event Start Time</label>
+        <input [owlDateTime]="dt3" [owlDateTimeTrigger]="dt3" placeholder="Event Start Time" class="form-control"  name="eventStartTime" [(ngModel)]="eventModel.eventStartTime"  id="input-eventStartTime">
+        <owl-date-time #dt3></owl-date-time>
+
+        <!-- <small class="form-text error" *ngIf="eventStartTime.invalid && eventStartTime.touched && eventStartTime.errors?.required">
+                Event Start is required!
+        </small> -->
+    </div>
+
+    <div class="form-group">
+        <label for="input-eventEndTime" class="sr-only">Event End Time</label>
+        <input [owlDateTime]="dt4" [owlDateTimeTrigger]="dt4" placeholder="eventEndTime" class="form-control"  name="eventEndTime" [(ngModel)]="eventModel.eventEndTime"  id="input-eventEndTime" required>
+        <owl-date-time #dt4></owl-date-time>
+
+        <!-- <small class="form-text error" *ngIf="eventEndTime.invalid && eventEndTime.touched && eventEndTime.errors?.required">
+                Event End time is required!
+        </small> -->
+    </div>
+
+    <div class="card">
+        <div class="card-body"> 
+            <h5 class="card-title">Slot Details</h5>
+            <form  #slotForm="ngForm" autocomplete="nope">
+            <div class="form-group">
+                    <label  for="input-eventStartTime" class="sr-only">Slots Name </label>
+                    <input type="text" name="slotname" [(ngModel)]="slotModel.slotname" id="input-email"  class="form-control" placeholder="Slot Name"
+                      #slotname="ngModel" [class.form-control-danger]="slotname.invalid && slotname.touched" autofocus required maxlength="25">
+                    <small class="form-text error" *ngIf="slotname.invalid && slotname.touched && slotname.errors?.required">
+                            Name is required!
+                    </small>
+                </div>
+            
+                <div class="form-group">
+                        <label  for="input-eventStartTime" class="sr-only">Slot Description </label>
+                        <input type="text" name="description" [(ngModel)]="slotModel.slotdescription" id="input-email"  class="form-control" placeholder="Slot Description"
+                          #slotdescription="ngModel" [class.form-control-danger]="slotdescription.invalid && slotdescription.touched" autofocus required maxlength="55">
+                        <small class="form-text error" *ngIf="slotdescription.invalid && slotdescription.touched && slotdescription.errors?.required">
+                                 Description is required!
+                        </small>
+                </div>
+                <div class="form-group">
+                    <label for="input-eventStartTime" class="sr-only">Event Start Time</label>
+                    <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Event Start Time" class="form-control"  name="eventStartTime" [(ngModel)]="slotModel.eventStartTime"  id="input-eventStartTime">
+                    <owl-date-time #dt1></owl-date-time>
+            
+                    <!-- <small class="form-text error" *ngIf="eventStartTime.invalid && eventStartTime.touched && eventStartTime.errors?.required">
+                            Event Start is required!
+                    </small> -->
+                </div>
+            
+                <div class="form-group">
+                    <label for="input-eventEndTime" class="sr-only">Event End Time</label>
+                    <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" placeholder="eventEndTime" class="form-control"  name="eventEndTime" [(ngModel)]="slotModel.eventEndTime"  id="input-eventEndTime" required>
+                    <owl-date-time #dt2></owl-date-time>
+            
+                    <!-- <small class="form-text error" *ngIf="eventEndTime.invalid && eventEndTime.touched && eventEndTime.errors?.required">
+                            Event End time is required!
+                    </small> -->
+                </div>  
+                <div class="form-group">
+                    <label  for="input-capacity" class="sr-only">Capacity</label>
+                    <input type="number" name="slotCapacity" [(ngModel)]="slotModel.slotCapacity" id="input-capacity"  class="form-control" placeholder="Capacity"
+                      #slotCapacity="ngModel" [class.form-control-danger]="slotCapacity.invalid && slotCapacity.touched" autofocus required maxlength="55">
+                    <small class="form-text error" *ngIf="slotCapacity.invalid && slotCapacity.touched && slotCapacity.errors?.required">
+                        Capacity is required!
+                    </small>
+                </div>
+            
+                <div class="row"> 
+                    <div class="col-md-12">
+                        <div  class="btn btn-success" (click) = "addTimeSlot();slotForm.reset()" > Add Time Slot</div>
+                        <p class="form-text error" *ngIf="slotErrorMsg" style="margin:-10px 15px;margin-top:5px;">
+                                {{ slotErrorMsg }}
+                        </p>
+                    </div>
+                </div>
+                </form>
+        </div>
+       
+    </div>
+
+    <div class="row" *ngIf="slotList.length > 0">
+        <div class="col-md-12"> 
+            <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td> Name</td>
+                            <td> Description</td>
+                            <td> Start Date</td>
+                            <td> End Date </td>
+                            <td> Capacity </td> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor = "let slot of slotList">
+                                <td> {{ slot.name}}</td>
+                                <td> {{ slot.description}}</td>
+                                <td> {{ slot.startTime}}</td>
+                                <td> {{ slot.endTime}}</td>
+                                <td> {{ slot.capacity}}</td>
+                        </tr>
+                    </tbody>
+            </table>    
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:15px;">
+        <div class="card-body"> 
+                <h5 class="card-title">Contact Details</h5>
+                <form  #contactModelForm="ngForm" autocomplete="nope">
+                    <div class="form-group">
+                            <label  for="input-eventStartTime" class="sr-only">Contact Name</label>
+                            <input type="text" name="contactName" [(ngModel)]="contactModel.contactName" id="input-email"  class="form-control" placeholder="Name"
+                            #contactName="ngModel"  maxlength="25">
+                    </div>
+
+                    <div class="form-group">
+                            <label  for="input-eventStartTime" class="sr-only">Contact Email</label>
+                            <input type="email" name="contactEmail" [(ngModel)]="contactModel.contactEmail" id="input-email"  class="form-control" placeholder="Email"
+                            #contactEmail="ngModel"  maxlength="25">
+                    </div>
+
+                    <div class="form-group">
+                            <label  for="input-eventStartTime" class="sr-only">Contact PhoneNo</label>
+                            <input type="number" name="contactPhoneNo" [(ngModel)]="contactModel.contactPhoneNo" id="input-email"  class="form-control" placeholder="Phone No"
+                            #contactPhoneNo="ngModel"  maxlength="12">
+                    </div>
+                                    
+                    <div class="row"> 
+                        <div class="col-md-12">
+                            <div  class="btn btn-success" (click) = "addContact();contactModelForm.reset()" > Add Contact</div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+           
+    </div>
+
+    <!--  -->
+    <div class="row" *ngIf="contactList.length > 0">
+            <div class="col-md-12"> 
+                <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <td> Name</td>
+                                <td> Email</td>
+                                <td> Phone No</td> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor = "let contact of contactList">
+                                    <td> {{ contact.name}}</td>
+                                    <td> {{ contact.email}}</td>
+                                    <td> {{ contact.phone}}</td>
+                            </tr>
+                        </tbody>
+                </table>    
+            </div>
+        </div>
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn btn-success" (click)="previewUrlModal()" style="margin:15px 0px;">Select Preview Image</div>
+            <img src={{eventModel.previewURL}}  width="100px;"/>
+            <p class="form-text error" *ngIf="previewUrlErrMsg" style="margin:-10px 15px;">
+                    Preview image is required!
+            </p>
+            <div>
+          
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn btn-success" (click)="thumbnailURLModal()" style="margin:15px 0px;">Select Thumbnail Image</div>
+            <img src={{eventModel.thumbnailURL}}  width="100px;"/>
+            <span class="form-text error" *ngIf="thumbnailErrMsg" style="margin:-10px 15px; ;">
+                    Thumnail image is required!
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6" >
+                <label>Visibility</label>
+                <select class="form-control"   name="visibility" [(ngModel)]="eventModel.visibility" type="text" id="input-visibility" class="form-control" >
+                    <option>Public</option>
+                    <option>Private</option>
+                </select>
+        </div>
+    
+        <!-- <div class="form-group col-md-6" >
+            <label>Guest require ID cards</label>
+            <select class="form-control"   name="guestRequireID " [(ngModel)]="eventModel.guestRequireID " type="text" id="input-visibility" class="form-control" >
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div> -->
+    </div>
+    
+    <!-- <div class="row">
+        <div class="form-group col-md-6" >
+            <label>Allow Comments</label>
+            <select class="form-control"   name="allowComments" [(ngModel)]="eventModel.allowComments" type="text" id="input-visibility" class="form-control" >
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>  
+
+        <div class="form-group col-md-6" >
+            <label>Allow MediaUploads</label>
+            <select class="form-control"   name="allowMediaUploads" [(ngModel)]="eventModel.allowMediaUploads" type="text" id="input-visibility" class="form-control" >
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        </div>
+    </div> -->
+
+    <div class="form-group">
+        <label>Rules</label>
+        <ckeditor [config]="{ extraPlugins: 'divarea', height: '200' } "  [(ngModel)]="eventModel.rules" name="rules" id="input-longDescHTML"  #rules="ngModel"  [class.form-control-danger]="rules.invalid && rules.touched"></ckeditor>
+        <small class="form-text error" *ngIf="rules.invalid && rules.touched && rules.errors?.required">
+                Long Description is required!
+        </small>
+    </div>
+  
+
+
+    <button [disabled]="!form.valid" class="btn btn-block btn-hero-success"  (click)="submitForm()">
+        Save Event
+    </button>
+</form>

@@ -1,0 +1,198 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+
+<div>
+    <div class="panel-group">
+        <form [formGroup]="editMemberForm" (ngSubmit)="submitForm(editMemberForm.getRawValue())">
+            <nb-card>
+
+                <div style="padding: 20px;text-align: center;">
+                    <img src="{{eventModel.profileImageURL || userImage}}" width="150" height="150" (click)="previewUrlModal()">
+                    <div class="row justify-content-center" style="margin-top: 20px;text-align: left">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input [(ngModel)]="eventModel['firstName']" type="text" class="form-control" placeholder="First Name" formControlName="firstname"
+                                [class.form-control-danger]="editMemberForm.controls['firstname'].touched && editMemberForm.controls['firstname'].errors" required>
+                                    <span *ngIf="editMemberForm.controls['firstname'].touched && editMemberForm.controls['firstname'].errors?.required" class="text-danger">Firstname field is required*</span>
+                                </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <input [(ngModel)]="eventModel['lastName']" type="text" class="form-control" placeholder="Last Name" formControlName="lastname" 
+                                [class.form-control-danger]="editMemberForm.controls['lastname'].touched && editMemberForm.controls['lastname'].errors" required>
+                                <span *ngIf="editMemberForm.controls['lastname'].touched && editMemberForm.controls['lastname'].errors?.required" class="text-danger">Lastname field is required*</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>User ID</label>
+                                <input [(ngModel)]="eventModel['userID']" type="text" class="form-control" placeholder="User ID" formControlName="user_id" disabled>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Badge ID</label>
+                                <input [(ngModel)]="eventModel['badgeID']" type="text" class="form-control" placeholder="Badge ID" formControlName="badge_id" 
+                                [class.form-control-danger]="editMemberForm.controls['badge_id'].touched && editMemberForm.controls['badge_id'].errors" required>
+                               
+                                <span *ngIf="editMemberForm.controls['badge_id'].touched && editMemberForm.controls['badge_id'].errors?.required" class="text-danger">Lastname field is required*</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Role</label>
+                                <select [(ngModel)]="eventModel['roleType']" class="form-control" formControlName="role" placeholder="Role">
+                                    <option value="CARE_TAKER">Care Taker</option>
+                                    <option value="CARE_PROVIDER">Care Provider</option>
+                                    <option value="GENERAL_USER">General</option>
+                                    <option value="VOLUNTEER ">Volunteer</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Role Status</label>
+                                <select [(ngModel)]="eventModel['roleStatus']" class="form-control" formControlName="role_status">
+                                    <option value="APPROVED">Approved</option>
+                                    <option value="PENDING">Pending</option>
+                                    <option value="DENIED">Denied</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </nb-card-body>
+            </nb-card>
+
+            <nb-card>
+                <nb-card-header>
+                    Personal Details
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Door NO</label>
+                                <input [(ngModel)]="eventModel['doorNo']" type="text" class="form-control" placeholder="Door NO" formControlName="door_no"
+                                    >
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Zip Code</label>
+                                <input [(ngModel)]="eventModel['zipcode']" type="text" formControlName="zip_code" class="form-control" placeholder="Zip Code"
+                                    >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Street</label>
+                                <input [(ngModel)]="eventModel['street']" type="text" class="form-control" placeholder="Street" formControlName="street"
+                                    >
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>State</label>
+                                <input [(ngModel)]="eventModel['state']" type="text" formControlName="state" class="form-control" placeholder="State">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input [(ngModel)]="eventModel['country']" type="text" class="form-control" placeholder="Country" formControlName="country"
+                                    >
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input [(ngModel)]="eventModel['address']" type="text" formControlName="address" class="form-control" placeholder="Address"
+                                    >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input [(ngModel)]="eventModel['phone']" type="text" class="form-control" placeholder="Phone" formControlName="phone">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input [(ngModel)]="eventModel['email']" type="email" formControlName="email" class="form-control" placeholder="Email" [class.form-control-danger]="editMemberForm.controls['email'].touched && editMemberForm.controls['email'].errors" required>
+
+                                <span *ngIf="editMemberForm.controls['email'].touched && editMemberForm.controls['email'].errors?.required" class="text-danger">Email field is required*</span>
+
+                                <span *ngIf="editMemberForm.controls['email'].touched && editMemberForm.controls['email'].errors?.email" class="text-danger">Please enter valid email*</span>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+
+            <nb-card>
+                <nb-card-header>
+                    Others
+                </nb-card-header>
+                <nb-card-body>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Joing Orgs (One record per line)</label>
+                                <textarea [(ngModel)]="eventModel['parentEmail']" rows="4" class="form-control" placeholder="Joing Orgs" formControlName="joined_orgs"
+                                    required></textarea>
+                            </div>
+                        </div>
+                  
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Pending Orgs (One record per line)</label>
+                                <textarea [(ngModel)]="eventModel['approvalPendingEmails']" rows="4" class="form-control" placeholder="Pending Orgs" formControlName="pending_orgs"
+                                    ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Device Token (IOS)</label>
+                                <input [(ngModel)]="eventModel['deviceToken']" type="text" class="form-control" placeholder="Device Token IOS" formControlName="device_token_ios"
+                                    >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Device Token (Android)</label>
+                                <input [(ngModel)]="eventModel['deviceToken_iOS']" type="text" class="form-control" placeholder="Device Token Android" formControlName="device_token_android"
+                                    >
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+            <div>
+                <input type="submit" class="btn btn-success pull-right" value="Save" [disabled]="!editMemberForm.valid">
+            </div>
+        </form>
+    </div>
+</div>

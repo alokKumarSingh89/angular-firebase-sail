@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <span>Upload Image</span>
+  <button class="close" aria-label="Close" (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class = "row" style="margin: 10px 10px;">
+    <form>
+      <div class="row">
+        <div class="col-md-3">
+          <label> Image Url:</label>
+        </div>
+        <div class="col-md-9">
+          <input style="width: 500px" type="text" name="avatar" [(ngModel)]="imageUrl" [ngModelOptions]="{standalone: true}">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div class="img-background"> <img src="{{imageUrl}}"  width="200px"> </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="sendImage()">Send</button>
+</div>

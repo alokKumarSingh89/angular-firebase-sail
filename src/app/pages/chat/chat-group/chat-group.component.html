@@ -1,0 +1,63 @@
+<div class="container">
+  <h1>Create Conversation</h1>
+  <form>
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" class="form-control" [(ngModel)]="groupname" [ngModelOptions]="{standalone: true}" required>
+    </div>
+    <div class="form-group">
+      <label>Room Description</label>
+      <input type="text" class="form-control" [(ngModel)]="groupdesc" [ngModelOptions]="{standalone: true}">
+    </div>
+    <div class="form-group">
+      <label>Add Members</label>
+      <div class="checkbox">
+        <angular2-multiselect [data]="dropdownList" [(ngModel)]="selectedItems" name="selectedItems" [settings]="dropdownSettings"
+          (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)" (onDeSelectAll)="onDeSelectAll($event)">
+          <c-search>
+              <ng-template>
+                  <input type="text" (keyup)="onSearch($event)" placeholder="Search Memeber" style="border: none;width: 100%; height: 100%;outline: none;"/>
+              </ng-template>
+         </c-search>
+         <c-item>
+            <ng-template let-item="item">
+                <label style="color: #333;width: 150px;">{{item.itemName}}</label>
+            </ng-template>
+        </c-item>
+
+        </angular2-multiselect>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <label>Icon(Recommended a square image)</label>
+      </div>
+      <div class="col-md-2">
+        <div class="btn btn-success" (click)="previewUrlModal('icon')" style="margin:15px 0px;float: left;margin-right: 10px;">
+          <i class="fa fa-plus fa-2x"></i>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <img src={{iconUrl}} width="100px;" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <label>Add 5 Image</label>
+      </div>
+      <div class="col-md-2" *ngIf="imageUrl.length < 5">
+        <div class="btn btn-success" (click)="previewUrlModal()" style="margin:15px 0px;float: left;margin-right: 10px;">
+          <i class="fa fa-plus fa-2x"></i>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <img src={{img}} width="100px;" *ngFor="let img of imageUrl" style="margin-right: 10px;"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button type="submit" [disabled]="!((selectedMembers.length > 1) && (groupname != '')) " (click)="addConversation()" class="btn btn-success">ADD</button>
+      </div>
+    </div>
+  </form>
+</div>

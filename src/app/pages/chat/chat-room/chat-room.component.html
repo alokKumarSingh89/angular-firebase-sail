@@ -1,0 +1,56 @@
+<div class="row">
+  <div class="col-md-3">
+    <app-user-list (selectedConversation)="setConversationId($event)"></app-user-list>
+  </div>
+  <div class="col-md-9" style="padding: 0;">
+    <div class="chat">
+      <div class="chat-header clearfix row" *ngIf="selectedConversation">
+        <div class="col-md-1" style="padding:0">
+          <img src="{{ picture}}" width="100%" style="border-radius: 50%;"/>
+        </div>
+    
+        <div class="col-md-10">
+          <div class="chat-about" *ngIf="selectedConversation">
+            <div class="chat-with">{{ conversationName}}</div>
+            <div class="chat-with member-list">{{memberList}}</div>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div style="float: right; margin-right: auto">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+    
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item routerLink="edit/{{ selectedConversation.appyID }}" (click)="goToEditConversation()" *ngIf="selectedConversation">
+                <span>Edit Group</span>
+              </button>
+              <button mat-menu-item (click)="goToDeleteConversation()">
+                <span>Delete Group</span>
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+        <div class="col-md-12" style="margin-top: 5px;">
+          <img src="{{ img}}" width="50px" height="50px" *ngFor="let img of imageUrl" style="margin-right: 6px;"/>
+            <button mat-icon-button routerLink="edit/{{ selectedConversation.appyID }}" *ngIf="selectedConversation && selectedConversation.isGroupChat && imageUrl && imageUrl.length<5"
+              style="background: #f2f5f8;">
+              <mat-icon class="plus">add</mat-icon>
+            </button>
+        </div>
+      </div>
+      <!-- end chat-header -->
+      <div class="feedWrapper">
+        <app-feed [selectedConversation]="selectedConversation" [feed]="feed"></app-feed>
+      </div>
+    
+      <div>
+        <app-chat-form [selectedConversation]="selectedConversation"></app-chat-form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="people-list" id="people-list">
+  
+</div> -->
+

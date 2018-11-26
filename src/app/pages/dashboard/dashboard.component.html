@@ -1,0 +1,7 @@
+
+<div class="row"> 
+  <div class="col-md-4" *ngFor="let content of dashboardContent">
+      <ngx-solar [chartValue]=content.percent_number [titleValue]= content.title  [firstValue]=content.first_value [secondValue]=content.second_value ></ngx-solar>
+  </div> 
+</div>
+

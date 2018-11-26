@@ -1,0 +1,54 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+<h2 class="title" *ngIf="isNewUpdate">Create New Faq</h2>
+<h2 class="title" *ngIf="!isNewUpdate">Update Faq</h2>
+
+<form #form="ngForm" autocomplete="nope">
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="input-email" class="sr-only">Category</label>
+            <input name="category" [(ngModel)]="faqModel.category" id="input-category" class="form-control" placeholder="Category"
+                #category="ngModel" [class.form-control-danger]="category.invalid && category.touched" autofocus required maxlength="25">
+            <small class="form-text error" *ngIf="category.invalid && category.touched && category.errors?.required">
+                Category is required!
+            </small>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label for="input-question" class="sr-only">Question</label>
+            <input name="question" [(ngModel)]="faqModel.question" type="text" id="input-question" class="form-control" placeholder="Question"
+                #question="ngModel" [class.form-control-danger]="question.invalid && question.touched" required maxlength="100">
+            <small class="form-text error" *ngIf="question.invalid && question.touched && question.errors?.required">
+                Question is required!
+            </small>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Answer</label>
+        <ckeditor [config]="{ extraPlugins: 'divarea', height: '320' } " [(ngModel)]="faqModel.answer" name="answer" id="input-answer"
+            #answer="ngModel" [class.form-control-danger]="answer.invalid && answer.touched"></ckeditor>
+        <small class="form-text error" *ngIf="answer.invalid && answer.touched && answer.errors?.required">
+            Answer is required!
+        </small>
+    </div>
+
+    <div class="form-group">
+        <label for="input-module_link" class="sr-only">Module Link</label>
+        <input name="module_link" [(ngModel)]="faqModel.module_link" type="text" id="input-module_link" class="form-control" placeholder="Module Link"
+            #module_link="ngModel" [class.form-control-danger]="module_link.invalid && module_link.touched" pattern="^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:[/?#]\S*)?$">
+        <small class="form-text error" *ngIf="module_link.invalid && module_link.touched && module_link.errors?.required">
+            Module Link is required!
+        </small>
+        <small class="form-text error" *ngIf="module_link.invalid && module_link.touched && module_link.errors?.pattern">
+            Enter valid URL
+        </small>
+    </div>
+
+
+    <button [disabled]="!form.valid" class="btn btn-block btn-hero-success"  (click)="submitForm()">
+        Save
+    </button>
+</form>

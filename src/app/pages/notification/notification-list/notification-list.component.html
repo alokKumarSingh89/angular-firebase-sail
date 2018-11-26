@@ -1,0 +1,33 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+<div class="row" *ngIf=false>
+        <div class="col-md-4" > <a routerLink="add" class="btn btn-hero-info btn-demo"> Add Updates</a> </div>
+        <div class="col-md-8">
+          <input *ngIf="config.filtering" placeholder="Filter all columns"
+                 [ngTableFiltering]="config.filtering"
+                 class="form-control"
+                 (tableChanged)="onChangeTable(config)"/>
+        </div>
+      
+      <br>
+      <ng-table [config]="config"
+                (tableChanged)="onChangeTable(config)"
+                (cellClicked)="onCellClick($event)"
+                (cellEdited)="onCellEdit($event)"
+                (cellDeleted)="onCellDelete($event)"
+                [rows]="rows" [columns]="columns">
+      </ng-table>
+      <pagination *ngIf="config.paging"
+                  class="pagination-sm"
+                  [(ngModel)]="page"
+                  [totalItems]="length"
+                  [itemsPerPage]="itemsPerPage"
+                  [maxSize]="maxSize"
+                  [boundaryLinks]="true"
+                  [rotate]="false"
+                  (pageChanged)="onChangeTable(config, $event)"
+                  (numPages)="numPages = $event">
+      </pagination>
+      <pre *ngIf="config.paging" class="card card-block card-header">Page: {{page}} / {{numPages}}</pre>
+    </div>  
+      <!-- <button (click)="login()">Login</button>
+      <button (click)="logout()">Logout</button> -->

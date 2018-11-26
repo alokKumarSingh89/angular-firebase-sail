@@ -1,0 +1,9 @@
+<p class="divider">Conversation</p>
+<p *ngIf="users && users.length<1">
+  There is no conversation....
+</p>
+<ul class="list">
+    <app-user-item *ngFor="let user of users; let i =index " (emailId)="setSelectedEmailId($event)"
+                   [user]=user (click)="setClickedRow(i)" [class.selectedcon]="i == selectedConversationIndex">
+    </app-user-item>
+  </ul>

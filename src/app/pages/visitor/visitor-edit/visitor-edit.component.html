@@ -1,0 +1,213 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+<h2 class="title" *ngIf="isNewUpdate">Add Visitor</h2>
+<h2 class="title" *ngIf="!isNewUpdate">Update Visitor</h2>
+<form (ngSubmit)="submitForm()" #form="ngForm" autocomplete="nope">
+
+
+    <!-- <div class="row">
+            <div class="form-group col-md-6">
+                    <label for="input-email" class="sr-only">Door No</label>
+                        <input name="doorNo" [(ngModel)]="visitorModel.doorNo" id="input-doorNo"  class="form-control" placeholder="Door No"
+                        #doorNo="ngModel" [class.form-control-danger]="doorNo.invalid && doorNo.touched" autofocus required maxlength="25" 
+                        [typeahead]="doorNoList"
+                        typeaheadWaitMs="500"
+                        (keyup)="getDoorList($event)"
+                        class="form-control">
+                    
+                    <small class="form-text error" *ngIf="fName.invalid && fName.touched && fName.errors?.required">
+                        First Name is required!
+                    </small>
+            </div>
+        </div> -->
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="input-email" class="sr-only">FirstName</label>
+            <input name="fName" [(ngModel)]="visitorModel.fName" id="input-fName" class="form-control" placeholder="First Name" #fName="ngModel"
+                [class.form-control-danger]="fName.invalid && fName.touched" autofocus required maxlength="25" class="form-control">
+
+            <small class="form-text error" *ngIf="fName.invalid && fName.touched && fName.errors?.required">
+                First Name is required!
+            </small>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="input-email" class="sr-only">LastName</label>
+            <input name="lName" [(ngModel)]="visitorModel.lName" id="input-lastName" class="form-control" placeholder="Last Name" #lName="ngModel"
+                [class.form-control-danger]="lName.invalid && lName.touched" autofocus required maxlength="25" >
+            <small class="form-text error" *ngIf="lName.invalid && lName.touched && lName.errors?.required">
+                Last Name is required!
+            </small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label>Approval Type</label>
+            <select name="apprType" [(ngModel)]="visitorModel.apprType" id="input-apprType" #apprType="ngModel" class="form-control"
+                (change)="onChangeApproval($event)" required  [class.form-control-danger]="apprType.invalid && apprType.touched" >
+                <option value="PREAPP"> Pre Approval </option>
+                <option value="ONSITE"> On-Site </option>
+            </select>
+            <small class="form-text error" *ngIf="apprType.invalid && apprType.touched && apprType.errors?.required">
+                    Approval type is required!
+                </small>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label>Purpose</label>
+            <input name="purpose" [(ngModel)]="visitorModel.purpose" id="input-purpose" class="form-control" placeholder="purpose" #purpose="ngModel"
+                [class.form-control-danger]="purpose.invalid && purpose.touched" autofocus required maxlength="25">
+            <small class="form-text error" *ngIf="purpose.invalid && purpose.touched && purpose.errors?.required">
+                Purpose is required!
+            </small>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label for="input-email" class="sr-only">Organization</label>
+            <input name="fromOrg" [(ngModel)]="visitorModel.fromOrg" id="input-fromOrg" class="form-control" placeholder=" Organization"
+                #fromOrg="ngModel" [class.form-control-danger]="fromOrg.invalid && fromOrg.touched" autofocus required maxlength="25">
+            <small class="form-text error" *ngIf="fromOrg.invalid && fromOrg.touched && fromOrg.errors?.required">
+                Organization is required!
+            </small>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="input-email" class="sr-only">Visiting To</label>
+            <!-- <input name="toVisit" [(ngModel)]="visitorModel.toVisit" id="input-toVisit"  class="form-control" placeholder="Visiting To"
+                            #toVisit="ngModel" [class.form-control-danger]="toVisit.invalid && toVisit.touched" autofocus required maxlength="25"> -->
+            <input input name="toVisit" [(ngModel)]="visitorModel.toVisit" id="input-toVisit" class="form-control" placeholder="Visiting To"
+                #toVisit="ngModel" [class.form-control-danger]="toVisit.invalid && toVisit.touched" autofocus required maxlength="25"
+                [typeahead]="doorNoList" typeaheadWaitMs="500" (keyup)="getDoorList($event)" class="form-control">
+
+
+            <small class="form-text error" *ngIf="toVisit.invalid && toVisit.touched && toVisit.errors?.required">
+                Visiting to is required!
+            </small>
+        </div>
+    </div>
+
+
+    <div class="row" *ngIf="visitorModel.apprType === 'PREAPP'">
+        <div class="form-group col-md-6">
+            <label for="input-eventStartTime" class="sr-only">expArrivalStart</label>
+            <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="expArrivalStart" class="form-control" name="expArrivalStart"
+                [(ngModel)]="visitorModel.expArrivalStart" id="input-expArrivalStart">
+            <owl-date-time #dt1></owl-date-time>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="input-eventEndTime" class="sr-only">expArrivalEnd</label>
+            <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" placeholder="expArrivalEnd" class="form-control" name="expArrivalEnd"
+                [(ngModel)]="visitorModel.expArrivalEnd" id="input-expArrivalEnd" required>
+            <owl-date-time #dt2></owl-date-time>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label>Status</label>
+            <select class="form-control" name="apprStatus" [(ngModel)]="visitorModel.apprStatus" #apprStatus="ngModel"  id="input-emailTargetGroups" class="form-control" [class.form-control-danger]="apprStatus.invalid && apprStatus.touched" 
+                required>
+                <option *ngFor="let vStatus of visitorStatus">{{vStatus.status}}</option>
+            </select>
+            <small class="form-text error" *ngIf="apprStatus.invalid && apprStatus.touched && apprStatus.errors?.required">
+                Status to is required!
+            </small>
+        </div>
+    </div>
+
+    <!-- <div class="row">
+            <div class="col-md-12">
+                <div class="btn btn-success" (click)="previewUrlModal()" style="margin:15px 0px;" > Profile Images</div>
+                <div class="row">
+                    <div class="col-md-1" style="margin-right:10px;"> 
+                            <img src={{eventModel.profileImageURL}}  width="100px;"/>
+                    </div>
+                </div>
+                
+                <p class="form-text error" *ngIf="thumbnailErrMsg" style="margin:-10px 15px;">
+                        Profile image is required!
+                </p>
+
+            </div>
+        </div> -->
+    <div class="row" style="margin:15px 0;">
+        <!-- <div class="col-md-4">
+            Upload Image :
+            <input type="file" name="avatar" id="fileToUpload" name="Image" [(ngModel)]="file1" (change)="fileEvent($event)">
+            <div class="error"> </div>
+            <small class="form-text error" *ngIf="errorMsg">
+                {{errorMsg}}
+            </small>
+        </div>
+        <div class="col-md-2">
+            <img src="{{this.visitorModel.userImg}}" class="img-responsive" width="95px">
+        </div>
+        <div class="col-md-2">
+            <input type="button" value="Upload" name="Upload" class="btn btn-success" (click)="upoadImage()">
+        </div> -->
+
+
+        <div style="text-align:center">    
+                <div *ngIf="!webcamImage">
+                  <webcam [height]="150" [width]="150" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+                          [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+                          [videoOptions]="videoOptions"
+                          (cameraSwitched)="cameraWasSwitched($event)"
+                          (initError)="handleInitError($event)"
+                  ></webcam>
+                  <br/>
+                  <input type="button" class="actionBtn" class="btn btn-success" (click)="triggerSnapshot();" value="Take A Snapshot">
+                  <!-- <input type="button" class="actionBtn" class="btn btn-success" (click)="toggleWebcam();" value="Toggle Webcam"> -->
+                  <br/>        
+                </div>
+                <div class="snapshot" *ngIf="webcamImage">
+                        <img [src]="webcamImage.imageAsDataUrl" height="150" width="150"/>
+                </div>
+
+                <input *ngIf="webcamImage" type="button" class="actionBtn" class="btn btn-success" (click)="webcamImage= ''" value="Clear">
+                      
+                      <!-- <h4 *ngIf="errors.length > 0">Messages:</h4> -->
+                      <ul *ngFor="let error of errors">
+                        <li>{{error | json}}</li>
+                      </ul>
+        </div>
+      
+    </div>
+
+    <button [disabled]="!form.valid" class="btn btn-block btn-hero-success" >
+        Save Visitor
+    </button>
+</form>
+
+
+<!-- <div style="text-align:center">    
+        <div *ngIf="!webcamImage">
+          <webcam [height]="150" [width]="150" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+                  [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+                  [videoOptions]="videoOptions"
+                  (cameraSwitched)="cameraWasSwitched($event)"
+                  (initError)="handleInitError($event)"
+          ></webcam>
+          <br/>
+          <button class="actionBtn" (click)="triggerSnapshot();">Take A Snapshot</button>
+          <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button>
+          <br/>        
+        </div>
+        <div class="snapshot" *ngIf="webcamImage">
+                <h2>Nice one!</h2>
+                <img [src]="webcamImage.imageAsDataUrl" height="150" width="150"/>
+              </div>
+              
+              <h4 *ngIf="errors.length > 0">Messages:</h4>
+              <ul *ngFor="let error of errors">
+                <li>{{error | json}}</li>
+              </ul>
+</div> -->
+      
+     
+
+      

@@ -1,0 +1,121 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+
+<h2 class="title" *ngIf="isNewUpdate">Create Booking</h2>
+<h2 class="title" *ngIf="!isNewUpdate">Update Booking</h2>
+
+<form (ngSubmit)="submitForm()" #form="ngForm" autocomplete="nope">
+    
+    <!-- <div class="row" *ngIf="!isNewUpdate">
+        <div class="form-group col-md-6">
+            <label for="input-email" class="sr-only">Name</label>
+            <input name="eventID" [(ngModel)]="bookingModel.eventID" id="input-eventID" readonly class="form-control" placeholder="Event Name"
+                #eventID="ngModel" [class.form-control-danger]="eventID.invalid && eventID.touched" autofocus required>
+            <small class="form-text error" *ngIf="eventID.invalid && eventID.touched && eventID.errors?.required">
+                Name is required!
+            </small>
+        </div>
+    </div> -->
+    <div class="row">
+        <div class="form-group col-md-6">
+                <label>Name</label>
+                <input name="bookedBy" [(ngModel)]="bookingModel.bookedBy" id="input-name"  class="form-control" placeholder="Name"
+                    #bookedBy="ngModel" [class.form-control-danger]="bookedBy.invalid && bookedBy.touched" autofocus required maxlength="25">
+                <small class="form-text error" *ngIf="bookedBy.invalid && bookedBy.touched && bookedBy.errors?.required">
+                    Name is required!
+                </small>
+        </div>
+        
+            <div class="form-group col-md-6">
+                    <label>Guests</label>
+                    <input name="guests" [(ngModel)]="bookingModel.guests" id="input-name"  class="form-control" placeholder="Guests"
+                    #guests="ngModel" [class.form-control-danger]="guests.invalid && guests.touched" autofocus required maxlength="125">
+                    <small class="form-text error" *ngIf="guests.invalid && guests.touched && guests.errors?.required">
+                            Guests is required!
+                    </small>
+            </div>
+
+    </div>
+    <!-- <div class="row">
+        <div class="form-group col-md-6">
+                <label >Booking Start Time</label>
+                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Booking Start Time" class="form-control"  name="startTime" [(ngModel)]="bookingModel.startTime"  id="input-eventStartTime">
+                <owl-date-time #dt1></owl-date-time>
+        </div>
+    
+        <div class="form-group col-md-6">
+            <label>Booking End Time</label>
+            <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" placeholder="Booking End Time" class="form-control"  name="endTime" [(ngModel)]="bookingModel.endTime"  id="input-endTime" required>
+            <owl-date-time #dt2></owl-date-time>
+        </div>
+    </div> -->
+
+    <div class="row">
+            <div class="form-group col-md-6">
+                    <label>Event</label>
+                    <select class="form-control" #eventID="ngModel"  name="eventID" [(ngModel)]="bookingModel.eventID" type="text" id="input-eventID" class="form-control" required (change)="onChangeEvent(eventID.value)">
+                            <option [ngValue]="">Select Event</option>
+                            <option *ngFor="let obj of facilities" [ngValue]="obj.id">{{obj.name}}</option>
+                    </select>
+                    <small class="form-text error" *ngIf="eventID.invalid && eventID.touched && eventID.errors?.required">
+                            Event is required!
+                    </small>
+            </div>
+
+            <div class="form-group col-md-6">
+                    <label>Slot</label>
+                    <select class="form-control" #slotID="ngModel"  name="slotID" [(ngModel)]="bookingModel.slotID" type="text" id="input-slotID" class="form-control" >
+                            <option [ngValue]="">Select Event</option>
+                            <option *ngFor="let obj of selectedEvent.slots" [ngValue]="obj.name">{{obj.name}}</option>
+                    </select>
+                    <!-- <small class="form-text error" *ngIf="slotID.invalid && slotID.touched && slotID.errors?.required">
+                            Event is required!
+                    </small> -->
+            </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label>Number of Kids</label>
+            <input type="number" name="kids" [(ngModel)]="bookingModel.kids" id="input-name"  class="form-control" placeholder="kids"
+                #kids="ngModel" [class.form-control-danger]="kids.invalid && kids.touched" autofocus  maxlength="25">
+            <small class="form-text error" *ngIf="kids.invalid && kids.touched && kids.errors?.required">
+                Name is required!
+            </small>
+        </div>
+
+        <div class="form-group col-md-6">
+                <label>Number of Adults</label>
+                <input type="number" name="adults" [(ngModel)]="bookingModel.adults" id="input-name"  class="form-control" placeholder="adults"
+                    #adults="ngModel" [class.form-control-danger]="adults.invalid && adults.touched" autofocus  maxlength="25">
+                <small class="form-text error" *ngIf="adults.invalid && adults.touched && adults.errors?.required">
+                    Name is required!
+                </small>
+        </div>
+
+    </div>        
+
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label >Comments</label>
+            <input name="comments" [(ngModel)]="bookingModel.comments" type="text" id="input-comments" class="form-control" placeholder="Comments"
+                #comments="ngModel" [class.form-control-danger]="comments.invalid && comments.touched"  maxlength="60">
+            <small class="form-text error" *ngIf="comments.invalid && comments.touched && comments.errors?.required">
+                Comments is required!
+            </small>
+        </div>
+        <div class="form-group col-md-6" *ngIf="!isNewUpdate">
+                <label>Approved</label>
+                <select class="form-control"   name="approved" [(ngModel)]="bookingModel.approved" type="text" id="input-approved" class="form-control" >
+                    <option value="true">Approved</option>
+                    <option value="false">Disapprove</option>
+                </select>
+        </div>
+    </div>
+
+   
+    
+
+    <button [disabled]="!form.valid" class="btn btn-block btn-hero-success" >
+        Save Booking
+    </button>
+</form>

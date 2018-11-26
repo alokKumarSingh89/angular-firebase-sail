@@ -1,0 +1,244 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+
+<div>
+    <nb-card>
+        <nb-card-header>
+            Payment Configuration
+        </nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-6">
+                    <select class="form-control" [(ngModel)]="selectedPaymentMethod" (change)="onPaymentMethodChange()">
+                        <option *ngFor="let paymentMethod of paymentMethods" value="{{paymentMethod.type}}">{{paymentMethod.title}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="payumoneyForm" *ngIf="selectedPaymentMethod === 'payumoney'">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form [formGroup]="payumoneyForm_test" (ngSubmit)="savePaymentConfiguration('test')">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label style="font-size: 20px;">Test Mode</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Merchant Key</label>
+                                        <input type="text" class="form-control" formControlName="merchant_key" [(ngModel)]="paymentConfiguration_test.fields.merchant_key" placeholder="Merchant Key"
+                                        [class.form-control-danger]="payumoneyForm_test.controls['merchant_key'].touched && payumoneyForm_test.controls['merchant_key'].errors" required>
+
+                                            <span *ngIf="payumoneyForm_test.controls['merchant_key'].touched && payumoneyForm_test.controls['merchant_key'].errors?.required" class="text-danger">Merchant Key field is required*</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Merchant Salt</label>
+                                        <input type="text" class="form-control" formControlName="merchant_salt" placeholder="Merchant Salt" [(ngModel)]="paymentConfiguration_test.fields.merchant_salt" [class.form-control-danger]="payumoneyForm_test.controls['merchant_salt'].touched && payumoneyForm_test.controls['merchant_salt'].errors" required>
+                                        
+                                        <span *ngIf="payumoneyForm_test.controls['merchant_salt'].touched && payumoneyForm_test.controls['merchant_salt'].errors?.required" class="text-danger">Merchant Salt field is required*</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Auth Header</label>
+                                        <input type="text" class="form-control" formControlName="auth_header" placeholder="Auth Header" [(ngModel)]="paymentConfiguration_test.fields.auth_header">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Success URL</label>
+                                        <input type="text" class="form-control" formControlName="success_url" placeholder="Success URL" [(ngModel)]="paymentConfiguration_test.fields.success_url">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Failure URL</label>
+                                        <input type="text" class="form-control" formControlName="failure_url" placeholder="Failure URL" [(ngModel)]="paymentConfiguration_test.fields.failure_url">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="submit" class="btn btn-success" value="Save Test Configuration" [disabled]="!payumoneyForm_test.valid">
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <form [formGroup]="payumoneyForm_production" (ngSubmit)="savePaymentConfiguration('production')">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label style="font-size: 20px;">Production Mode</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Merchant Key</label>
+                                        <input type="text" class="form-control" formControlName="merchant_key" placeholder="Merchant Key" [(ngModel)]="paymentConfiguration_production.fields.merchant_key"
+                                        [class.form-control-danger]="payumoneyForm_production.controls['merchant_key'].touched && payumoneyForm_production.controls['merchant_key'].errors" required>
+
+
+                                            <span *ngIf="payumoneyForm_production.controls['merchant_key'].touched && payumoneyForm_production.controls['merchant_key'].errors?.required" class="text-danger">Merchant Key field is required*</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Merchant Salt</label>
+                                        <input type="text" class="form-control" formControlName="merchant_salt" placeholder="Merchant Salt" [(ngModel)]="paymentConfiguration_production.fields.merchant_salt" 
+                                        [class.form-control-danger]="payumoneyForm_production.controls['merchant_salt'].touched && payumoneyForm_production.controls['merchant_salt'].errors" required>
+                                        
+                                        <span *ngIf="payumoneyForm_production.controls['merchant_salt'].touched && payumoneyForm_production.controls['merchant_salt'].errors?.required" class="text-danger">Merchant Salt field is required*</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Auth Header</label>
+                                        <input type="text" class="form-control" formControlName="auth_header" placeholder="Auth Header" [(ngModel)]="paymentConfiguration_production.fields.auth_header">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Success URL</label>
+                                        <input type="text" class="form-control" formControlName="success_url" placeholder="Success URL" [(ngModel)]="paymentConfiguration_production.fields.success_url  ">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Failure URL</label>
+                                        <input type="text" class="form-control" formControlName="failure_url" placeholder="Failure URL" [(ngModel)]="paymentConfiguration_production.fields.failure_url">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="submit" class="btn btn-success" value="Save Production Configuration" [disabled]="!payumoneyForm_production.valid">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payumoneyForm" *ngIf="selectedPaymentMethod === 'razorpay'">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form [formGroup]="razorpayForm_test" (ngSubmit)="savePaymentConfiguration('test')">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label style="font-size: 20px;">Test Mode</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Key ID</label>
+                                        <input type="text" class="form-control" formControlName="key_id" placeholder="Key ID" [(ngModel)]="paymentConfiguration_test.fields.key_id"
+                                        [class.form-control-danger]="razorpayForm_test.controls['key_id'].touched && razorpayForm_test.controls['key_id'].errors" required>
+                                        
+                                         <span *ngIf="razorpayForm_test.controls['key_id'].touched && razorpayForm_test.controls['key_id'].errors?.required" class="text-danger">Key ID field is required*</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Key Secret</label>
+                                        <input type="text" class="form-control" formControlName="key_secret" placeholder="Key Secret"  [(ngModel)]="paymentConfiguration_test.fields.key_secret"
+                                        [class.form-control-danger]="razorpayForm_test.controls['key_secret'].touched && razorpayForm_test.controls['key_secret'].errors" required>
+                                        
+                                        <span *ngIf="razorpayForm_test.controls['key_secret'].touched && razorpayForm_test.controls['key_secret'].errors?.required" class="text-danger">Key Secret field is required*</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="submit" class="btn btn-success" value="Save Test Configuration" [disabled]="!razorpayForm_test.valid">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <form [formGroup]="razorpayForm_production" (ngSubmit)="savePaymentConfiguration('production')">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label style="font-size: 20px;">Production Mode</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Key ID</label>
+                                        <input type="text" class="form-control" formControlName="key_id" placeholder="Key ID"  [(ngModel)]="paymentConfiguration_production.fields.key_id"
+                                        [class.form-control-danger]="razorpayForm_production.controls['key_id'].touched && razorpayForm_production.controls['key_id'].errors" required>
+                                        
+                                        <span *ngIf="razorpayForm_production.controls['key_id'].touched && razorpayForm_production.controls['key_id'].errors?.required" class="text-danger">Key ID field is required*</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Key Secret</label>
+                                        <input type="text" class="form-control" formControlName="key_secret" placeholder="Key Secret"  [(ngModel)]="paymentConfiguration_production.fields.key_secret"
+                                        [class.form-control-danger]="razorpayForm_production.controls['key_secret'].touched && razorpayForm_production.controls['key_secret'].errors" required>
+                                        
+                                        <span *ngIf="razorpayForm_production.controls['key_secret'].touched && razorpayForm_production.controls['key_secret'].errors?.required" class="text-danger">Key Secret field is required*</span>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="submit" class="btn btn-success" value="Save Production Configuration" [disabled]="!razorpayForm_production.valid">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </nb-card-body>
+    </nb-card>
+</div>

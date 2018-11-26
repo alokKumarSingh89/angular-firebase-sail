@@ -1,0 +1,21 @@
+.selected-img{
+  background: aquamarine;
+  padding: 3px
+}
+.img-background{
+  curson:pointer;
+  padding:5px;
+  width: 105px;
+}
+.modal{
+  display: block !important; /* I added this to see the modal, you don't need this */
+}
+
+/* Important part */
+.modal-dialog{
+  overflow-y: initial !important
+}
+.modal-body{
+  height: 400px;
+  overflow-y: auto;
+}

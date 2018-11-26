@@ -1,0 +1,11 @@
+<div class="message-data" [class.align-right]="!isOwnMessage">
+      <span class="message-data-time" >{{ time }}</span> &nbsp; &nbsp;
+      <span class="message-data-name" >{{ userName }}</span> <i class="fa fa-circle"
+                               [class.me]="!isOwnMessage" [class.online]="isOwnMessage"></i>
+
+</div>
+<div class="message" [class.float-right]="!isOwnMessage" [class.other-message]="!isOwnMessage"
+      [class.my-message]="isOwnMessage">
+     <span *ngIf="messageContent!=''">{{ messageContent }}</span>
+  <img *ngIf="imageUrl!=''" src="{{imageUrl}}"  width="200px">
+</div>

@@ -1,0 +1,89 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+$green: #86BB71;
+$blue: #94C2ED;
+$orange: #E38968;
+$gray: #92959E;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  background: #C5DDEB;
+  font: 14px/20px "Lato", Arial, sans-serif;
+  padding: 40px 0;
+  color: white;
+}
+
+.chat {
+  width: 100%;
+  float: left;
+  background: #F2F5F8;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: inline-block;
+  color: #434651;
+}
+
+.people-list {
+  width: 260px;
+  float: left;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 88vh;
+  display: inline-block;
+}
+
+.search {
+  padding: 20px;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.chat-header {
+  padding: 20px;
+  border-bottom: 2px solid white;
+  margin: 0;
+}
+
+img {
+  float: left;
+}
+
+.chat-about {
+  float: left;
+  margin-top: 6px;
+}
+
+.chat-with {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.chat-num-messages {
+  color: $gray;
+}
+
+.member-list {
+  color: #a09d97;
+  font-size: 14px;
+  font-family: monospace;
+}
+
+.container {
+  margin: 0 auto;
+  background: #444753;
+  border-radius: 5px;
+}

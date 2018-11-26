@@ -1,0 +1,66 @@
+<div class="modal-header">
+    <span>Add Attedance</span>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body" style="overflow:hidden;">
+
+    <form (ngSubmit)="submitForm()" #form="ngForm" autocomplete="nope">
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label>User Type</label>
+                <select class="form-control" name="user_type" [(ngModel)]="attendanceModal.user_type" type="text" id="input-user_type" class="form-control"
+                    #user_type="ngModel" required>
+                    <option *ngFor="let type of userType" value="{{type}}">{{type}}</option>
+                </select>
+                <small class="form-text error" *ngIf="user_type.invalid && user_type.touched && user_type.errors?.required">
+                    Entry Time is required!
+                </small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="input-entry_time" class="sr-only">Entry Time</label>
+                <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" placeholder="Entry Time" class="form-control" name="entry_time" [(ngModel)]="attendanceModal.entry_time"
+                    id="input-entry_time" required [max] = "maxDate">
+                <owl-date-time #dt1></owl-date-time>
+
+                <!-- <small class="form-text error" *ngIf="entry_time.invalid && entry_time.touched && entry_time.errors?.required">
+                        Entry Time is required!
+                    </small> -->
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="input-entry_time" class="sr-only">Exit Time</label>
+                <input [owlDateTime]="dt2" [owlDateTimeTrigger]="dt2" placeholder="Exit Time" class="form-control" name="exit_time" [(ngModel)]="attendanceModal.exit_time"
+                    id="input-exit_time" [max] = "maxDate">
+                <owl-date-time #dt2></owl-date-time>
+
+                <!-- <small class="form-text error" *ngIf="entry_time.invalid && entry_time.touched && entry_time.errors?.required">
+                        Entry Time is required!
+                    </small> -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="input-note" class="sr-only">Note</label>
+                <input name="note" [(ngModel)]="attendanceModal.note" id="input-email" class="form-control" placeholder="Note"
+                    #note="ngModel" [class.form-control-danger]="note.invalid && note.touched">
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="input-reference" class="sr-only">Reference</label>
+                <input name="reference" [(ngModel)]="attendanceModal.reference" id="input-reference" class="form-control" placeholder="Reference"
+                    #reference="ngModel" [class.form-control-danger]="reference.invalid && reference.touched">
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" [disabled]="!form.valid" (click)="_activeModal.close(attendanceModal)">Save</button>
+</div>

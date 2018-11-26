@@ -1,0 +1,116 @@
+<toaster-container [toasterconfig]="toastConfig"></toaster-container>
+
+<div class="row">
+      <!-- <div class="col-md-4" *ngIf="canCreate"> <a routerLink="add" class="btn btn-hero-info btn-demo"> Add Member</a> </div> -->
+      <div class="col-md-2">
+            <label>User ID</label>
+            <input class="form-control ng-pristine ng-valid ng-touched" id="input-userid" name="userID" [(ngModel)]="userID" placeholder="User Id">
+      </div>
+      <div class="col-md-3">
+            <label>First Name</label>
+            <input class="form-control ng-pristine ng-valid ng-touched" id="input-first-name" name="First Name" [(ngModel)]="firstName"
+                  placeholder="First Name">
+      </div>
+      <div class="col-md-3">
+            <label>Last Name</label>
+            <input class="form-control ng-pristine ng-valid ng-touched" id="input-last-name" [(ngModel)]="lastName" name="Last Name"
+                  placeholder="Last Name">
+      </div>
+      <div class="col-md-2">
+            <label>Type</label>
+            <select name="userType" [(ngModel)]="userType" id="input-email" class="form-control">
+                  <option value="">
+                        -- ALL --
+                  </option>
+                  <option *ngFor="let role of userRole" value="{{ role.key }}">
+                        {{ role.value }}
+                  </option>
+            </select>
+      </div>
+      <div class="col-md-2">
+            <input type="button" value="Search" class="btn btn-primary" (click)="currentOffset =0; seachMember();" style="margin-top: 20px;">
+      </div>
+</div>
+<br>
+
+<div class="row">
+      <div class="col-md-12" style="overflow-x:auto;">
+            <table class="table table-striped table-bordered">
+                  <thead>
+                        <tr>
+                              <th> User Icon </th>
+                              <th [class.active]="order === 'firstName'" (click)="setOrder('firstName')">First Name
+                                    <span [hidden]="reverse">
+                                          <i class="fa fa-chevron-down"></i>
+                                    </span>
+                                    <span [hidden]="!reverse">
+                                          <i class="fa fa-chevron-up"></i>
+                                    </span>
+                              </th>
+                              <th [class.active]="order === 'lastName'" (click)="setOrder('lastName')">Last Name
+                                    <span [hidden]="reverse">
+                                          <i class="fa fa-chevron-down"></i>
+                                    </span>
+                                    <span [hidden]="!reverse">
+                                          <i class="fa fa-chevron-up"></i>
+                                    </span>
+                              </th>
+                              <th [class.active]="order === 'userID'" (click)="setOrder('userID')">User ID
+                                    <span [hidden]="reverse">
+                                          <i class="fa fa-chevron-down"></i>
+                                    </span>
+                                    <span [hidden]="!reverse">
+                                          <i class="fa fa-chevron-up"></i>
+                                    </span>
+                              </th>
+                              <th [class.active]="order === 'phoneno'" (click)="setOrder('phoneno')">Phone no
+                                    <span [hidden]="reverse">
+                                          <i class="fa fa-chevron-down"></i>
+                                    </span>
+                                    <span [hidden]="!reverse">
+                                          <i class="fa fa-chevron-up"></i>
+                                    </span>
+                              </th>
+                              <th [class.active]="order === 'email'" (click)="setOrder('email')">Email
+                                    <span [hidden]="reverse">
+                                          <i class="fa fa-chevron-down"></i>
+                                    </span>
+                                    <span [hidden]="!reverse">
+                                          <i class="fa fa-chevron-up"></i>
+                                    </span>
+                              </th>
+                              <th>Action</th>
+                        </tr>
+                  </thead>
+                  <tr *ngFor="let row of sortedCollection | orderBy: order:reverse:'case-insensitive'">
+                        <td>
+                              <img [src]="row['profileImageURL']" width='50px' height='50px' />
+                              <br>
+                              <b> {{ row.roleType }}</b>
+                        </td>
+
+                        <td> {{ row.firstName }} </td>
+                        <td> {{ row.lastName }} </td>
+                        <td> {{ row.userID }} </td>
+                        <td> {{ row.phoneno }} </td>
+                        <td> {{ row.email }} </td>
+                        <td>
+                              <i *ngIf="canEdit" class='fa fa-pencil edit-btn' (click)="onCellEdit(row)"></i>
+                              <i *ngIf="canEdit" class='fa fa-trash delete-btn' (click)="onCellDelete(row)"></i>
+                              <i *ngIf='isDisplayLinked' class='fa fa-users' (click)="onCellLink(row)"></i>
+                              <i *ngIf='isDisplayConsultationed' class='fa fa-user-plus' (click)="cellConsultation(row)"></i>
+                        </td>
+                  </tr>
+            </table>
+      </div>
+
+</div>
+
+<div class="row text-center" *ngIf="sortedCollection.length === 0">
+      No records found
+</div>
+<div class="row pull-right" style="margin-right: 30px;">
+      <input type="button" class="btn btn-primary" value="Previous" (click)="previousPage()" *ngIf="currentOffset > 0 && (sortedCollection.length > 0)"
+            style="margin-right:15px;">
+      <input type="button" class="btn btn-primary" *ngIf="sortedCollection.length > 0" value="Next" (click)="nextPage()">
+</div>
